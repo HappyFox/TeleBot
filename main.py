@@ -1,12 +1,19 @@
 from machine import Pin, I2C
 
-import pca9685
+from adafruit import motorshield
 
 i2c = I2C(scl=Pin(5), sda=Pin(4), freq=100000)
 
-pca = pca9685.Pca9685(i2c, 0x60)
-pca.freq(1600)
+shield = motorshield.get_motor_shield(i2c)
+motor0 = shield.get_motor(0)
 
-eight = pca9685.Pwm(pca, 8)
-nine = pca9685.Pin(pca, 9)
-ten = pca9685.Pin(pca, 10)
+# pca = pca9685.Pca9685(i2c, 0x60)
+# pca.freq(1600)
+
+# eight = pca9685.Pwm(pca, 8)
+# nine = pca9685.Pin(pca, 9)
+# ten = pca9685.Pin(pca, 10)
+
+# eight = pca.init_pwm(8)
+# nine = pca.init_pin(9)
+# ten = pca.init_pin(10)

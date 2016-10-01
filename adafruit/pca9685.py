@@ -2,7 +2,7 @@ import math
 import ustruct
 import utime
 
-from i2cutils import I2cRegDevice
+from .i2cutils import I2cRegDevice
 
 
 MODE1 = 0x00
@@ -127,7 +127,7 @@ class Pca9685:
         self.pins = []
 
         for _ in range(16):
-            self.pin.append(None)
+            self.pins.append(None)
 
     def reset(self):
         self.dev[MODE1] = 0x00
@@ -174,13 +174,23 @@ class Pca9685:
     def _init_pin(self, idx, _type):
         if self.pins[idx]:
             pin = self.pins[idx]
-            if type(pin) == _type:
+            if isinstance(pin, _type):
                 return pin
             else:
-                raise
+                raise PinWrongTypeError()
+
+        self.pins[idx] = _type(self, idx)
+        return self.pins[idx]
 
     def init_pwm(self, pin):
         return self._init_pin(pin, Pwm)
 
     def init_pin(self, pin):
         return self._init_pin(pin, Pin)
+
+    def deinit_pin(self, pin):
+        idx = self.pins.index(pin)
+        if pin:
+            self.pins[idx] = None
+            pin.reset()
+            del(pin)
