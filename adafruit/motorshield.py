@@ -41,23 +41,23 @@ class Motor:
         self.pwm.duty(speed)
 
     def direction(self, direction=None):
-        if not direction:
+        if direction is None:
             direction = self.in_1.value()
             direction += self.in_2.value() << 1
 
-            if self.invert and 1 <= direction <= 2:
-                direction = direction ^ 3  # Binary invert.
+            if self.invert and 0b01 <= direction <= 0b10:
+                direction = direction ^ 0b11  # Binary invert.
 
             return direction
 
-        if not 0 <= direction <= 3:
-            raise InvaidDirectionError()
+        if not 0 <= direction <= 0b11:
+            raise InvalidDirectionError()
 
-        if self.invert and 1 <= direction <= 2:
-            direction = direction ^ 3
+        if self.invert and 0b01 <= direction <= 0b10:
+            direction = direction ^ 0b11
 
-        self.in_1.value(direction & 1)
-        self.in_2.value(direction & 2)
+        self.in_1.value(direction & 0b01)
+        self.in_2.value(direction & 0b10)
 
 
 class MotorShield:
