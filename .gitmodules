@@ -1,0 +1,3 @@
+[submodule "drivers"]
+	path = drivers
+	url = git@github.com:HappyFox/mpy_drivers.git
