@@ -10,6 +10,10 @@ upload:
 ls:
 	ampy ls
 
+setup:
+	ampy mkdir drivers
+	ampy mkdir drivers/adafruit
+
 test: upload
 	ampy run test.py
 
